@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment  # Deployment's resource
+metadata:
+  name: nginx-deployment
+spec:             # specifies the desired config for the Deployment
+  selector:       # defines how to identify the pods managed by this Deployment
+    matchLabels:  # uses the label "nginx" to select the pods
+      app: nginx
+  replicas: 2     # specifies that 2 pods should be created (for high availability, if one fails, it will create another one to keep 2 alive)
+  template:       # defines the pod template used to create pods
+    metadata:     # from now on, it's the same config as 02-pod.yaml
+      labels:
+        app: nginx  # sets the label "nginx" for the pods
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:alpine
+        env:
+        - name: MI_VARIABLE
+          value: "pelado"
+        - name: MI_OTRA_VARIABLE
+          value: "pelade"
+        - name: DD_AGENT_HOST
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "200m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          tcpSocket:
+            port: 80
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        ports:
+        - containerPort: 80

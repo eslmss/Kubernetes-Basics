@@ -1,4 +1,4 @@
-apiVersion: v1
+apiVersion: v1                        # same as 01-pod.yaml
 kind: Pod
 metadata:
   name: nginx
@@ -6,32 +6,32 @@ spec:
   containers:
   - name: nginx
     image: nginx:alpine
-    env:
+    env:                              # env variables
     - name: MI_VARIABLE
       value: "pelado"
     - name: MI_OTRA_VARIABLE
       value: "pelade"
-    - name: DD_AGENT_HOST
+    - name: DD_AGENT_HOST               # "DD_AGENT_HOST" will contain the hostIP
       valueFrom:
         fieldRef:
           fieldPath: status.hostIP
-    resources:
-      requests:
-        memory: "64Mi"
-        cpu: "200m"
-      limits:
-        memory: "128Mi"
-        cpu: "500m"
-    readinessProbe:
-      httpGet:
+    resources:                        # assigning resources to "nginx" container
+      requests:                         # guaranteed resources, always available
+        memory: "64Mi"                    # Mebibytes
+        cpu: "200m"                       # Millicores (20% of a core)
+      limits:                         # max resource limits for "nginx" container
+        memory: "128Mi"                 # in case it exceed memory limits, the pod will die
+        cpu: "500m"                     # if it exceed cpu limits, the cpu will just be bottle-necked
+    readinessProbe:                   # this checks if pod's ready for incoming traffic
+      httpGet:                          # if this fails, kubernetes won't send traffic to the container until it stop failing
         path: /
         port: 80
       initialDelaySeconds: 5
       periodSeconds: 10
-    livenessProbe:
-      tcpSocket:
+    livenessProbe:                    # this checks if pod's alive
+      tcpSocket:                        # if this fails, kubernets will restart the pod
         port: 80
       initialDelaySeconds: 15
       periodSeconds: 20
-    ports:
-    - containerPort: 80
+    ports:                            # port exposed by the "nginx" container
+    - containerPort: 80                 # (nginx uses port 80)
