@@ -1,0 +1,40 @@
+apiVersion: v1          # kubernete's API version
+kind: Pod               # defines resource's type
+metadata:               # defines resource's metadata
+  name: nginx             # in this case name = "nginx"
+spec:                   # specifies the desired pod's config
+  containers:             # list of containers that will be executed in the pod
+  - name: nginx             # container's name
+    image: nginx:alpine         # container's image
+
+# this manifest is defining a pod called "nginx" which contains one container. This containers use nginx:alpine img
+
+# 1) Start a local cluster with minikube and check status
+# ->  kubectl config current-context
+# ->  minikube start
+# ->  minikube status
+# ->  kubectl config current-context
+
+# 2) Lists all cluster nodes (there will only be one in minikube)
+# ->  kubectl get nodes
+
+# 3) Lists logical spaces to manage resources
+# ->  kubectl get namespaces
+
+# 4) Lists pods executing in all namespacess (we can also get the pods from a specific namespace)
+# ->  kubectl get pods -A
+# ->  kubectl get pods --namespace <ns-name>
+
+# 5) apply manifest (and check if it's running)
+# ->  kubectl apply -f 01-pod.yaml
+# ->  kubectl get pods
+
+# 6) how to run a shell command within the pod "nginx"
+# ->  kubectl exec -it nginx -- sh
+# ->  ls
+# ->  ps fax  (this will list all the processes in execution in the pod's container)
+
+# 7) check how a pod response to a deletion (this will simply kill the pod, because there's no order to keep always active an "nginx" pod)
+# -> kubectl get pods
+# -> kubectl delete pod nginx
+# -> kubectl get pods
