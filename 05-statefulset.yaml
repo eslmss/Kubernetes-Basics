@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: StatefulSet             # StatefulSet's resource (for assigning volumes to pods, allowing data persistance)
+metadata:
+  name: my-csi-app-set        # resource's name
+spec:                         # resource's specs
+  selector:
+    matchLabels:              # StatefulSet will manage pods with label "mypod"
+      app: mypod
+  serviceName: "my-frontend"  # service name used to generate DNS entries for the StatefulSet's pods
+  replicas: 1                 # number of pods to create
+  template:                     # defines the template for the pod managed by the StatefulSet
+    metadata:
+      labels:                   # defines labels for the pod created by the StatefulSet
+        app: mypod              # this label is used for quick identification and selection
+    spec:                       # pod's specs
+      containers:               # pod will run within a container named "my-frontend"
+      - name: my-frontend
+        image: busybox          # lightweight Linux-based img
+        args:                   # args for the pod to run indefinitely
+        - sleep
+        - infinity
+        volumeMounts:           # define how volumes are mounted into the container
+        - mountPath: "/data"    # the volume will be mounted to the path /data inside the container
+          name: csi-pvc         # links the mount to the PersistentVolumeClaim "csi-pvc" defined in the next lines
+  volumeClaimTemplates:           # defines a PersistentVolumeClain template. Each pod in the StatefulSet will have its own persistent volume
+  - metadata:
+      name: csi-pvc               # PVC's name, used by  the StatefulSet to create a unique PVC for each pod
+    spec:                         # PVC's specs
+      accessModes:
+      - ReadWriteOnce             # this ensures that only one pod has access to the volume at any time
+      resources:                  # PVC's request for 1gb of storage
+        requests:
+          storage: 1Gi
+      storageClassName: standard  # uses the SC named "standard" (to use minikube local disk in the node)

@@ -1,11 +1,12 @@
-This manifest creates a <u>DaemonSet</u> (resource that ensures one pod runs on each node) named "nginx-deployment." It deploys a pod running an nginx:alpine container. The pod includes environment variables (e.g., MI_VARIABLE, DD_AGENT_HOST), resource requests and limits, readiness and liveness probes, and exposes port 80. The DaemonSet ensures one pod is created per node, which is suitable for node-level tasks.
+This manifest creates a <u>StatefulSet</u> (to manage stateful apps, with data persistance and with pods created in a specific order) named "my-csi-app-set" that ensures a single pod (replicas: 1) with persistent storage is deployed. The pod runs a busybox container executing sleep infinity (to run indefinitely). 
+It includes a volume mounted at /data using a dynamically provisioned PersistentVolumeClaim (5Gi of storage) with access mode ReadWriteOnce and storage class do-block-storage.
 
-Use Cases: Monitoring, Networking, Logging
+Use Cases: Databases, Stateful Systems
 
 1. **Start a local cluster with Minikube with 3 nodes and check status**
-   - `minikube delete` (to delete the existent cluster created by default with 1 node)
+   - `minikube delete` (to delete the last cluster created with 3 nodes)
    - `kubectl config current-context`
-   - `minikube start --nodes 3`
+   - `minikube start --nodes 3`   (with 1 node if not specified)
    - `minikube status`
    - `kubectl config current-context`
 
@@ -20,7 +21,8 @@ Use Cases: Monitoring, Networking, Logging
    - `kubectl get pods --namespace <ns-name>`
 
 5. **Apply manifest (and check if it's running)**
-   - `kubectl apply -f 04-daemonset.yaml`
+   - `kubectl apply -f 05-statefulset.yaml`
+   - `kubectl get statefulsets`
    - `kubectl get pods`
    - `kubectl get pods -o wide` (to check that each of the pods runs on a different node)
 
@@ -30,10 +32,9 @@ Use Cases: Monitoring, Networking, Logging
    - `ps fax` (this will list all the processes in execution in the pod's container)
 
 7. **Return the detailed info about the pod "nginx" in YAML format**
-   - `kubectl get pod nginx -o yaml `
+   - `kubectl get pod <pod-name> -o yaml `
 
-8. **Check how a pod responds to a deletion (in this case, for DaemonSet, after a pod deletion, another one will be automatically created on the same node)**
-   - `kubectl get pods -o wide`
-   - `kubectl delete pod <pod-name>`
-   - `kubectl get pods -o wide`
-
+8. **Check pod and pvc**
+   - `kubectl describe pod my-csi-app-set-0`
+   - `kubectl get pvc`
+   - `kubectl describe pvc <optional-pvc-name>`

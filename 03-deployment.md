@@ -1,8 +1,10 @@
-This manifest creates a <u>Deployment</u> (a template for creating pods) named "nginx-deployment" that manages 2 replicas (for HA) of a Pod running an nginx:alpine container. It includes environment variables, resource requests and limits, readiness and liveness probes, and exposes port 80.
+This manifest creates a <u>Deployment</u> (template for creating pods) named "nginx-deployment" that manages 2 replicas (for HA) of a Pod running an nginx:alpine container. It includes environment variables, resource requests and limits, readiness and liveness probes, and exposes port 80.
+
+Use Cases: Web Apps, Stateless APIs
 
 1. **Start a local cluster with Minikube and check status**
    - `kubectl config current-context`
-   - `minikube start`
+   - `minikube start`   (with 1 node by default)
    - `minikube status`
    - `kubectl config current-context`
 
