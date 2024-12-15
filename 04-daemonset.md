@@ -9,7 +9,7 @@ Use Cases: Monitoring, Networking, Logging
    - `minikube status`
    - `kubectl config current-context`
 
-2. **Lists all cluster nodes (there will only be one in Minikube)**
+2. **Lists all cluster nodes (by default there will only be one in Minikube)**
    - `kubectl get nodes`
 
 3. **Lists logical spaces to manage resources**
@@ -37,3 +37,5 @@ Use Cases: Monitoring, Networking, Logging
    - `kubectl delete pod <pod-name>`
    - `kubectl get pods -o wide`
 
+9. **Delete the Minikube's cluster**
+   - `minikube delete`

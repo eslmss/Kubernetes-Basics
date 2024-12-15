@@ -10,7 +10,7 @@ Use Cases: Databases, Stateful Systems
    - `minikube status`
    - `kubectl config current-context`
 
-2. **Lists all cluster nodes (there will only be one in Minikube)**
+2. **Lists all cluster nodes (by default there will only be one in Minikube)**
    - `kubectl get nodes`
 
 3. **Lists logical spaces to manage resources**
@@ -34,7 +34,16 @@ Use Cases: Databases, Stateful Systems
 7. **Return the detailed info about the pod "nginx" in YAML format**
    - `kubectl get pod <pod-name> -o yaml `
 
-8. **Check pod and pvc**
+8. **Check pod and PVC**
    - `kubectl describe pod my-csi-app-set-0`
    - `kubectl get pvc`
-   - `kubectl describe pvc <optional-pvc-name>`
+   - `kubectl describe pvc <optional-pvc-name>` (to check te provisioning log)
+
+9. **Delete STS and PVC**
+   - `kubectl get statefulsets`
+   - `kubectl delete sts <pvc-name>`
+   - `kubectl get pvc` (now we got an unused pvc, so we can delete volume claim)
+   - `kubectl delete pvc <optional-pvc-name>` (to check te provisioning log)
+
+10. **Delete the Minikube's cluster**
+   - `minikube delete`

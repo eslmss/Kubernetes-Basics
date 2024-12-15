@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello
+spec:
+  replicas: 3     # number of pods
+  selector:       # matches pods with the label "hello"
+    matchLabels:
+      role: hello
+  template:       # pods config
+    metadata:
+      labels:
+        role: hello
+    spec:
+      containers:
+      - name: hello
+        image: gcr.io/google-samples/hello-app:1.0
+        ports:
+        - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service     # if we don't specify Type, this service will be ClusterIP by default (allowing internal communication between pods)
+metadata:
+  name: hello
+spec:
+  ports:
+  - port: 8080
+    targetPort: 8080
+  selector:
+    role: hello

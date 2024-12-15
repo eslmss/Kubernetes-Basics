@@ -7,7 +7,7 @@ It also sets environment variables, assigns resource requests and limits, and co
    - `minikube status`
    - `kubectl config current-context`
 
-2. **Lists all cluster nodes (there will only be one in Minikube)**
+2. **Lists all cluster nodes (by default there will only be one in Minikube)**
    - `kubectl get nodes`
 
 3. **Lists logical spaces to manage resources**
@@ -33,3 +33,6 @@ It also sets environment variables, assigns resource requests and limits, and co
    - `kubectl get pods`
    - `kubectl delete pod nginx`
    - `kubectl get pods`
+
+9. **Delete the Minikube's cluster**
+   - `minikube delete`

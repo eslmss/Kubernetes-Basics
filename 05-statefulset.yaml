@@ -31,4 +31,4 @@ spec:                         # resource's specs
       resources:                  # PVC's request for 1gb of storage
         requests:
           storage: 1Gi
-      storageClassName: standard  # uses the SC named "standard" (to use minikube local disk in the node)
+      storageClassName: standard  # kubernete's driver for a provider: this uses the SC named "standard" (to use minikube local disk in the node)

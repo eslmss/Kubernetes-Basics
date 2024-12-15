@@ -8,7 +8,7 @@ Use Cases: Web Apps, Stateless APIs
    - `minikube status`
    - `kubectl config current-context`
 
-2. **Lists all cluster nodes (there will only be one in Minikube)**
+2. **Lists all cluster nodes (by default there will only be one in Minikube)**
    - `kubectl get nodes`
 
 3. **Lists logical spaces to manage resources**
@@ -35,6 +35,9 @@ Use Cases: Web Apps, Stateless APIs
    - `kubectl delete pod <pod-name>`
    - `kubectl get pods`
 
-   9. **To delete the Deployment**
+9. **To delete the Deployment**
    - `kubectl delete -f 03-deployment.yaml` or `kubectl delete -f <deployment-name>`
    - `kubectl get pods` 
+
+10. **Delete the Minikube's cluster**
+   - `minikube delete`
